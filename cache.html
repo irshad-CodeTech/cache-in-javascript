@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Square Calculator irshad</title>
+  </head>
+  <body>
+    <h1>Square Calculator ~ irshad</h1>
+    <p>Enter a number and click the button to calculate its square:</p>
+
+    <input type="number" id="numberInput" placeholder="Enter a number" />
+    <button onclick="calculateSquare()">Calculate</button>
+
+    <p id="result"></p>
+
+    <script>
+      const cache = {};
+
+      async function square(number) {
+        if (cache[number]) {
+          return cache[number];
+        } else {
+          const result = await new Promise((resolve) => {
+            setTimeout(() => {
+              const squareResult = number * number;
+              cache[number] = squareResult;
+              resolve(squareResult);
+            }, 2000); // Delay of 2 seconds
+          });
+
+          return result;
+        }
+      }
+
+      async function calculateSquare() {
+        const numberInput = document.getElementById("numberInput");
+        const resultDisplay = document.getElementById("result");
+        const inputNumber = parseFloat(numberInput.value);
+
+        if (!isNaN(inputNumber)) {
+          resultDisplay.textContent = "Calculating...";
+
+          const squareResult = await square(inputNumber);
+
+          resultDisplay.textContent = `The square of ${inputNumber} is ${squareResult}`;
+        } else {
+          resultDisplay.textContent = "Please enter a valid number.";
+        }
+      }
+    </script>
+  </body>
+</html>
